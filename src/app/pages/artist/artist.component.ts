@@ -1,4 +1,5 @@
 import { Component, OnInit, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ArtistService } from '../../core/services/artist.service';
@@ -11,7 +12,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-artist',
   standalone: true,
-  imports: [RouterLink, FormsModule],
+  imports: [CommonModule, RouterLink, FormsModule],
   templateUrl: './artist.component.html',
   styleUrl: './artist.component.scss'
 })

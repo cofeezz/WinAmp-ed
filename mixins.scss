@@ -1,0 +1,81 @@
+@use 'variables' as *;
+
+// Glass card
+@mixin glass($blur: 16px, $bg: $glass-bg, $border: $glass-border) {
+  background: $bg;
+  backdrop-filter: blur($blur);
+  -webkit-backdrop-filter: blur($blur);
+  border: 1px solid $border;
+  border-radius: $radius-md;
+}
+
+// Chrome/metallic text
+@mixin chrome-text {
+  background: $grad-chrome;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+// Gradient text (blue-cyan)
+@mixin gradient-text($grad: $grad-blue) {
+  background: $grad;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+// Scanline overlay
+@mixin scanlines($opacity: 0.03) {
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,$opacity) 2px,
+      rgba(0,0,0,$opacity) 4px
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+}
+
+// Glow border on hover
+@mixin glow-border($color: $blue) {
+  border: 1px solid rgba($color, 0.2);
+  transition: $transition;
+  &:hover {
+    border-color: rgba($color, 0.6);
+    box-shadow: 0 0 16px rgba($color, 0.25), inset 0 0 16px rgba($color, 0.05);
+  }
+}
+
+// Button base
+@mixin btn-base {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: $radius-sm;
+  font-family: $font-body;
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: $transition;
+  border: none;
+  outline: none;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+// Responsive
+@mixin mobile {
+  @media (max-width: 768px) { @content; }
+}
+
+@mixin tablet {
+  @media (max-width: 1024px) { @content; }
+}

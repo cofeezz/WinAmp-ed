@@ -1,6 +1,6 @@
 # 🎧 WinAmp-ed
 
-> Uma Wikipédia alternativa da música underground — arquivo digital colaborativo inspirado na estética Y2K / Frutiger Aero / Web 2.0.
+> Uma Wikipédia alternativa da música underground — arquivo digital inspirado na estética Y2K / Frutiger Aero / Web 2.0.
 
 Repositório: [github.com/cofeezz/WinAmp-ed](https://github.com/cofeezz/WinAmp-ed)
 

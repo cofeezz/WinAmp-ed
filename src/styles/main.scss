@@ -1,0 +1,238 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// ============================================
+// RESET & BASE
+// ============================================
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: $font-body;
+  background-color: $black;
+  color: $white-ice;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  min-height: 100vh;
+  // Subtle noise texture for the "old web" feel
+  background-image:
+    radial-gradient(ellipse at 20% 20%, rgba(59,130,246,0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(34,211,238,0.03) 0%, transparent 50%);
+}
+
+// ============================================
+// TYPOGRAPHY
+// ============================================
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: $font-display;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+}
+
+a {
+  color: $cyan;
+  text-decoration: none;
+  transition: $transition;
+  &:hover { color: $blue; }
+}
+
+code, pre {
+  font-family: $font-mono;
+}
+
+// ============================================
+// SCROLLBAR
+// ============================================
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track { background: $dark; }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient($blue, $cyan);
+  border-radius: 3px;
+}
+
+// ============================================
+// UTILITY CLASSES
+// ============================================
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+
+  @include mobile {
+    padding: 0 16px;
+  }
+}
+
+.glass-card {
+  @include glass();
+  padding: 24px;
+}
+
+.gradient-text {
+  @include gradient-text();
+}
+
+.chrome-text {
+  @include chrome-text();
+}
+
+.btn-primary {
+  @include btn-base();
+  background: $grad-blue;
+  color: $black;
+  font-weight: 700;
+
+  &:hover {
+    box-shadow: $glow-blue;
+    transform: translateY(-1px);
+    color: $black;
+  }
+
+  &:active { transform: translateY(0); }
+}
+
+.btn-ghost {
+  @include btn-base();
+  background: transparent;
+  color: $white-ice;
+  border: 1px solid $glass-border;
+
+  &:hover {
+    background: $glass-hover;
+    border-color: rgba($blue, 0.4);
+    color: $white-ice;
+  }
+}
+
+.btn-cyber {
+  @include btn-base();
+  background: transparent;
+  color: $cyan;
+  border: 1px solid rgba($cyan, 0.4);
+  font-family: $font-display;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+
+  &:hover {
+    background: rgba($cyan, 0.08);
+    border-color: $cyan;
+    box-shadow: $glow-cyan;
+    color: $cyan;
+  }
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: rgba($blue, 0.12);
+  color: $cyan;
+  border: 1px solid rgba($cyan, 0.2);
+  letter-spacing: 0.04em;
+}
+
+// ============================================
+// FORM ELEMENTS
+// ============================================
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  label {
+    font-family: $font-display;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: $white-dim;
+  }
+
+  input, textarea, select {
+    width: 100%;
+    padding: 12px 16px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid $glass-border;
+    border-radius: $radius-sm;
+    color: $white-ice;
+    font-family: $font-body;
+    font-size: 0.95rem;
+    transition: $transition;
+    outline: none;
+
+    &::placeholder { color: rgba($white-dim, 0.5); }
+
+    &:focus {
+      border-color: rgba($blue, 0.6);
+      background: rgba($blue, 0.04);
+      box-shadow: $glow-sm;
+    }
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+}
+
+.error-msg {
+  font-size: 0.8rem;
+  color: #f87171;
+  font-family: $font-mono;
+}
+
+// ============================================
+// PAGE TRANSITIONS (Angular View Transitions)
+// ============================================
+
+::view-transition-old(root) {
+  animation: page-out 0.2s ease-out;
+}
+
+::view-transition-new(root) {
+  animation: page-in 0.25s ease-out;
+}
+
+@keyframes page-out {
+  to { opacity: 0; transform: scale(0.98); }
+}
+
+@keyframes page-in {
+  from { opacity: 0; transform: scale(1.01); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+// ============================================
+// LOADING SKELETON
+// ============================================
+
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, $dark-2 25%, $dark-3 50%, $dark-2 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.4s infinite linear;
+  border-radius: $radius-sm;
+}

@@ -1,0 +1,278 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+// ============================================
+// HERO
+// ============================================
+
+.hero {
+  position: relative;
+  min-height: 92vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 80px 24px 60px;
+
+  // Frutiger Aero radial glow background
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 0%, rgba($blue,0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 80% 80%, rgba($cyan,0.06) 0%, transparent 60%),
+    $black;
+
+  &__bg-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba($blue,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba($blue,0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+    pointer-events: none;
+  }
+
+  &__content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 760px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+  }
+
+  &__eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: $font-mono;
+    font-size: 0.72rem;
+    color: $white-dim;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  &__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: $aqua;
+    box-shadow: 0 0 8px $aqua;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  &__title {
+    font-family: $font-display;
+    font-size: clamp(2.4rem, 6vw, 4.2rem);
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: 0.01em;
+    color: $white-ice;
+
+    &-accent {
+      font-style: normal;
+      @include gradient-text($grad-blue);
+      display: block;
+    }
+  }
+
+  &__subtitle {
+    font-size: 1.05rem;
+    color: $white-dim;
+    line-height: 1.7;
+    max-width: 540px;
+  }
+
+  &__search {
+    width: 100%;
+    max-width: 560px;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  &__cta {
+    padding: 14px 28px;
+    font-size: 0.95rem;
+    border-radius: 100px;
+  }
+
+  &__stats {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    @include glass(12px, rgba(255,255,255,0.03));
+    border-radius: 100px;
+    padding: 14px 28px;
+    margin-top: 8px;
+  }
+
+  &__stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+
+    &-value {
+      font-family: $font-display;
+      font-size: 1.1rem;
+      font-weight: 700;
+      @include gradient-text($grad-aqua);
+    }
+
+    &-label {
+      font-size: 0.68rem;
+      color: $white-dim;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+  }
+
+  &__stat-divider {
+    width: 1px;
+    height: 32px;
+    background: $glass-border;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(0.8); }
+}
+
+// ============================================
+// CAROUSEL SECTION
+// ============================================
+
+.carousel-section {
+  padding: 80px 0;
+  position: relative;
+  overflow: hidden;
+
+  &__header {
+    margin-bottom: 48px;
+    text-align: center;
+  }
+}
+
+.carousel-wrap {
+  position: relative;
+}
+
+// ============================================
+// RECENT SECTION
+// ============================================
+
+.recent-section {
+  padding: 80px 0;
+}
+
+.section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 40px;
+  gap: 16px;
+}
+
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: $font-mono;
+  font-size: 0.7rem;
+  color: $white-dim;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+
+  &__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: $blue;
+    box-shadow: 0 0 8px $blue;
+
+    &.green {
+      background: $aqua;
+      box-shadow: 0 0 8px $aqua;
+    }
+  }
+}
+
+.section-title {
+  font-family: $font-display;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: $white-ice;
+}
+
+.section-desc {
+  color: $white-dim;
+  font-size: 0.9rem;
+  margin-top: 6px;
+}
+
+.artist-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+// ============================================
+// CTA BANNER
+// ============================================
+
+.cta-banner {
+  padding: 60px 0 80px;
+
+  &__inner {
+    @include glass(16px, rgba($blue,0.06), rgba($blue,0.15));
+    border-radius: $radius-xl;
+    padding: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    flex-wrap: wrap;
+    position: relative;
+    overflow: hidden;
+
+    // Aero glow
+    &::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba($blue,0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+  }
+
+  &__text {
+    h2 {
+      font-family: $font-display;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: $white-ice;
+      margin-bottom: 8px;
+    }
+
+    p {
+      color: $white-dim;
+      font-size: 0.9rem;
+    }
+  }
+}
+
+.desktop-only {
+  @include mobile { display: none; }
+}

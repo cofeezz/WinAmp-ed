@@ -1,0 +1,72 @@
+<div class="edit-profile container">
+  <a (click)="goToProfile()" class="edit-back">← Voltar ao perfil</a>
+
+  <h1 class="edit-title">Editar perfil</h1>
+  <p class="edit-subtitle">Personalize como você aparece para o resto do arquivo</p>
+
+  <div class="edit-grid">
+
+    <!-- Profile info -->
+    <div class="glass-card edit-section">
+      <h2 class="edit-section__title">Informações do perfil</h2>
+
+      <form [formGroup]="profileForm" class="edit-form">
+        <div class="form-group">
+          <label>Nome de usuário</label>
+          <input type="text" formControlName="username" />
+        </div>
+
+        <div class="form-group">
+          <label>E-mail</label>
+          <input type="email" formControlName="email" />
+        </div>
+
+        <div class="form-group">
+          <label>URL do avatar</label>
+          <input type="url" formControlName="avatarUrl" placeholder="https://..." />
+        </div>
+
+        <div class="form-group">
+          <label>Biografia</label>
+          <textarea formControlName="bio" rows="4" placeholder="Conte um pouco sobre você e seus gostos musicais..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Artistas favoritos (separados por vírgula)</label>
+          <input type="text" formControlName="favoriteArtists" placeholder="The Microphones, Duster, Elliott Smith" />
+        </div>
+
+        @if (error()) { <p class="error-msg">⚠ {{ error() }}</p> }
+        @if (success()) { <p class="success-msg">✓ {{ success() }}</p> }
+
+        <button type="button" class="btn-primary" (click)="saveProfile()" [disabled]="loading()">
+          @if (loading()) { Salvando... } @else { Salvar alterações }
+        </button>
+      </form>
+    </div>
+
+    <!-- Password -->
+    <div class="glass-card edit-section">
+      <h2 class="edit-section__title">Alterar senha</h2>
+
+      <form [formGroup]="passwordForm" class="edit-form">
+        <div class="form-group">
+          <label>Senha atual</label>
+          <input type="password" formControlName="currentPassword" placeholder="••••••••" />
+        </div>
+
+        <div class="form-group">
+          <label>Nova senha</label>
+          <input type="password" formControlName="newPassword" placeholder="Mínimo 6 caracteres" />
+        </div>
+
+        @if (passwordError()) { <p class="error-msg">⚠ {{ passwordError() }}</p> }
+        @if (passwordSuccess()) { <p class="success-msg">✓ {{ passwordSuccess() }}</p> }
+
+        <button type="button" class="btn-ghost" (click)="changePassword()" [disabled]="passwordLoading()">
+          @if (passwordLoading()) { Alterando... } @else { Alterar senha }
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

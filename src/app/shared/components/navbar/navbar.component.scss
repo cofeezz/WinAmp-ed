@@ -1,0 +1,213 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  height: $nav-height;
+  @include glass(20px, rgba(10,10,10,0.85), rgba(255,255,255,0.06));
+  border-radius: 0;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px solid $glass-border;
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    height: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  &__logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    flex-shrink: 0;
+
+    &-icon {
+      font-size: 1.4rem;
+      @include gradient-text($grad-blue);
+      line-height: 1;
+    }
+
+    &-text {
+      font-family: $font-display;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: $white-ice;
+      letter-spacing: 0.05em;
+      text-transform: lowercase;
+
+      em {
+        font-style: normal;
+        @include gradient-text($grad-blue);
+      }
+    }
+  }
+
+  &__links {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+
+    a {
+      padding: 6px 14px;
+      border-radius: $radius-sm;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: $white-dim;
+      text-decoration: none;
+      transition: $transition;
+
+      &:hover, &.active {
+        color: $white-ice;
+        background: $glass-hover;
+      }
+
+      &.active {
+        color: $cyan;
+      }
+    }
+
+    .btn-nav-cta {
+      margin-left: auto;
+      background: linear-gradient(135deg, rgba($blue,0.2), rgba($cyan,0.15));
+      border: 1px solid rgba($cyan, 0.3);
+      color: $cyan !important;
+      font-weight: 600;
+
+      &:hover {
+        background: rgba($cyan, 0.15);
+        border-color: $cyan;
+        box-shadow: $glow-cyan;
+      }
+    }
+  }
+
+  &__user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  &__avatar-wrap {
+    position: relative;
+  }
+
+  &__avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: $grad-blue;
+    color: $black;
+    font-family: $font-display;
+    font-size: 0.875rem;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    transition: $transition;
+
+    &:hover {
+      box-shadow: $glow-blue;
+      transform: scale(1.05);
+    }
+  }
+
+  &__dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    min-width: 200px;
+    @include glass(20px, rgba(22,22,22,0.95));
+    border-radius: $radius-md;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+
+    a, button {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: $radius-sm;
+      font-size: 0.875rem;
+      color: $white-dim;
+      text-decoration: none;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      font-family: $font-body;
+      width: 100%;
+      text-align: left;
+      transition: $transition;
+
+      &:hover {
+        background: $glass-hover;
+        color: $white-ice;
+      }
+    }
+
+    &-divider {
+      height: 1px;
+      background: $glass-border;
+      margin: 4px 8px;
+    }
+  }
+
+  &__hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+
+    span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: $white-dim;
+      border-radius: 1px;
+      transition: $transition;
+    }
+
+    @include mobile {
+      display: flex;
+    }
+  }
+
+  .btn-sm {
+    padding: 7px 16px;
+    font-size: 0.8rem;
+  }
+
+  @include mobile {
+    &__links {
+      display: none;
+      &.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: $nav-height;
+        left: 0;
+        right: 0;
+        background: rgba($dark, 0.98);
+        border-bottom: 1px solid $glass-border;
+        padding: 16px;
+      }
+    }
+  }
+}

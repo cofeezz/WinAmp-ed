@@ -1,0 +1,294 @@
+@if (loading()) {
+  <div class="wiki-loading container">
+    <div class="skeleton" style="height:300px;width:100%;border-radius:0;margin-bottom:32px"></div>
+    <div class="skeleton" style="height:24px;width:60%;margin-bottom:16px"></div>
+    <div class="skeleton" style="height:16px;width:80%;margin-bottom:8px"></div>
+    <div class="skeleton" style="height:16px;width:70%;margin-bottom:8px"></div>
+  </div>
+}
+
+@if (!loading() && artist(); as a) {
+<div class="wiki-page">
+
+  <!-- HERO BANNER -->
+  <div class="wiki-hero">
+    <div class="wiki-hero__bg">
+      @if (a.imageUrl) {
+        <img [src]="a.imageUrl" [alt]="a.name" class="wiki-hero__bg-img" />
+      }
+      <div class="wiki-hero__overlay"></div>
+    </div>
+    <div class="wiki-hero__content container">
+      <div class="wiki-hero__main">
+        <!-- Artist photo -->
+        <div class="wiki-artist-photo">
+          @if (a.imageUrl) {
+            <img [src]="a.imageUrl" [alt]="a.name" />
+          } @else {
+            <div class="wiki-artist-photo__placeholder">{{ a.name.charAt(0) }}</div>
+          }
+        </div>
+
+        <!-- Artist info -->
+        <div class="wiki-artist-info">
+          <div class="wiki-breadcrumb">
+            <a routerLink="/">Início</a> ›
+            <a routerLink="/explore">Artistas</a> ›
+            <span>{{ a.name }}</span>
+          </div>
+          <h1 class="wiki-artist-name">{{ a.name }}</h1>
+          @if (a.genre) {
+            <div class="wiki-artist-genres">
+              @for (genre of a.genre.split('/'); track genre) {
+                <span class="tag">{{ genre.trim() }}</span>
+              }
+            </div>
+          }
+          <div class="wiki-artist-meta">
+            @if (a.origin) {
+              <span class="wiki-meta-item">📍 {{ a.origin }}</span>
+            }
+            @if (a.formedYear) {
+              <span class="wiki-meta-item">📅 Desde {{ a.formedYear }}</span>
+            }
+            <span class="wiki-meta-item wiki-meta-item--pop">
+              🔥 {{ popularityLabel }}
+            </span>
+          </div>
+
+          <!-- Popularity bar -->
+          <div class="wiki-popularity">
+            <span class="wiki-popularity__label">Popularidade no arquivo</span>
+            <div class="wiki-popularity__bar">
+              <div class="wiki-popularity__fill" [style.width.%]="popularityPercent"></div>
+            </div>
+          </div>
+
+          @if (articles()[0]) {
+            <p class="wiki-creator">
+              Página criada por
+              <a [routerLink]="['/profile', articles()[0].author.username]">
+                {{ articles()[0].author.username }}
+              </a>
+            </p>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WIKI BODY -->
+  <div class="wiki-body container">
+    <div class="wiki-layout">
+
+      <!-- SIDEBAR -->
+      <aside class="wiki-sidebar">
+        <div class="wiki-toc glass-card">
+          <h3 class="wiki-toc__title">Conteúdo</h3>
+          <nav class="wiki-toc__nav">
+            <button [class.active]="activeSection()==='biography'" (click)="setSection('biography')">
+              📖 Biografia
+            </button>
+            <button [class.active]="activeSection()==='discography'" (click)="setSection('discography')">
+              💿 Discografia
+            </button>
+            <button [class.active]="activeSection()==='videos'" (click)="setSection('videos')">
+              🎬 Vídeos
+            </button>
+            <button [class.active]="activeSection()==='links'" (click)="setSection('links')">
+              🔗 Links Externos
+            </button>
+            <button [class.active]="activeSection()==='discussion'" (click)="setSection('discussion')">
+              💬 Discussão
+            </button>
+          </nav>
+        </div>
+
+        <!-- Quick facts -->
+        <div class="wiki-facts glass-card">
+          <h3 class="wiki-facts__title">Ficha do Artista</h3>
+          <dl class="wiki-facts__list">
+            @if (a.name) {
+              <dt>Nome artístico</dt>
+              <dd>{{ a.name }}</dd>
+            }
+            @if (a.genre) {
+              <dt>Gênero(s)</dt>
+              <dd>{{ a.genre }}</dd>
+            }
+            @if (a.origin) {
+              <dt>Origem</dt>
+              <dd>{{ a.origin }}</dd>
+            }
+            @if (a.formedYear) {
+              <dt>Formado em</dt>
+              <dd>{{ a.formedYear }}</dd>
+            }
+            <dt>Artigos</dt>
+            <dd>{{ articles().length }} páginas</dd>
+          </dl>
+        </div>
+
+        <!-- Edit button -->
+        <a routerLink="/create" class="btn-cyber wiki-edit-btn">
+          ✏️ Editar / Adicionar Conteúdo
+        </a>
+      </aside>
+
+      <!-- MAIN CONTENT -->
+      <main class="wiki-main">
+
+        <!-- BIOGRAPHY -->
+        @if (activeSection() === 'biography') {
+          <section class="wiki-section" id="biography">
+            <h2 class="wiki-section__title">
+              <span class="wiki-section__icon">📖</span>
+              Biografia
+            </h2>
+            <div class="wiki-section__body">
+              @if (a.bio) {
+                <div class="wiki-prose">
+                  @for (paragraph of a.bio.split('\n\n'); track $index) {
+                    <p>{{ paragraph }}</p>
+                  }
+                </div>
+              } @else {
+                <div class="wiki-empty">
+                  <p>Nenhuma biografia disponível ainda.</p>
+                  <a routerLink="/create" class="btn-cyber">Seja o primeiro a escrever ›</a>
+                </div>
+              }
+            </div>
+          </section>
+
+          <!-- Articles / Topics -->
+          @if (articles().length > 0) {
+            <section class="wiki-section">
+              <h2 class="wiki-section__title">
+                <span class="wiki-section__icon">📝</span>
+                Tópicos e Artigos
+              </h2>
+              <div class="wiki-articles">
+                @for (article of articles(); track article.id) {
+                  <div class="wiki-article-card glass-card" (click)="activeArticle.set(article)">
+                    <h3 class="wiki-article-card__title">{{ article.title }}</h3>
+                    <p class="wiki-article-card__preview">
+                      {{ article.content.substring(0, 160) }}...
+                    </p>
+                    <div class="wiki-article-card__meta">
+                      <span>por {{ article.author.username }}</span>
+                      <span>{{ article.createdAt | date:'dd/MM/yyyy' }}</span>
+                    </div>
+                  </div>
+                }
+              </div>
+            </section>
+          }
+        }
+
+        <!-- DISCOGRAPHY -->
+        @if (activeSection() === 'discography') {
+          <section class="wiki-section">
+            <h2 class="wiki-section__title">
+              <span class="wiki-section__icon">💿</span>
+              Discografia
+            </h2>
+            <div class="wiki-empty">
+              <p>Discografia ainda não catalogada.</p>
+              <a routerLink="/create" class="btn-cyber">Adicionar discografia ›</a>
+            </div>
+          </section>
+        }
+
+        <!-- VIDEOS -->
+        @if (activeSection() === 'videos') {
+          <section class="wiki-section">
+            <h2 class="wiki-section__title">
+              <span class="wiki-section__icon">🎬</span>
+              Vídeos
+            </h2>
+            <div class="wiki-empty">
+              <p>Nenhum vídeo incorporado ainda.</p>
+              <a routerLink="/create" class="btn-cyber">Adicionar vídeos ›</a>
+            </div>
+          </section>
+        }
+
+        <!-- EXTERNAL LINKS -->
+        @if (activeSection() === 'links') {
+          <section class="wiki-section">
+            <h2 class="wiki-section__title">
+              <span class="wiki-section__icon">🔗</span>
+              Links Externos
+            </h2>
+            <div class="wiki-links">
+              <a class="wiki-link-item" href="#" target="_blank">
+                <span class="wiki-link-icon">▶</span>
+                <span>Spotify</span>
+                <span class="wiki-link-arrow">›</span>
+              </a>
+              <a class="wiki-link-item" href="#" target="_blank">
+                <span class="wiki-link-icon">♪</span>
+                <span>Bandcamp</span>
+                <span class="wiki-link-arrow">›</span>
+              </a>
+              <a class="wiki-link-item" href="#" target="_blank">
+                <span class="wiki-link-icon">◉</span>
+                <span>SoundCloud</span>
+                <span class="wiki-link-arrow">›</span>
+              </a>
+            </div>
+          </section>
+        }
+
+        <!-- DISCUSSION -->
+        @if (activeSection() === 'discussion') {
+          <section class="wiki-section">
+            <h2 class="wiki-section__title">
+              <span class="wiki-section__icon">💬</span>
+              Discussão
+            </h2>
+            <div class="wiki-discussion">
+              <div class="wiki-discussion__empty">
+                <p>Nenhum comentário ainda. Seja o primeiro!</p>
+              </div>
+
+              @if (isLoggedIn()) {
+                <div class="wiki-comment-form glass-card">
+                  <h3>Deixe um comentário</h3>
+                  <textarea
+                    [(ngModel)]="comment"
+                    placeholder="Compartilhe o que você sabe ou pensa sobre {{ a.name }}..."
+                    rows="4"
+                  ></textarea>
+                  <button class="btn-primary" (click)="submitComment()">Publicar</button>
+                </div>
+              } @else {
+                <div class="wiki-login-prompt glass-card">
+                  <p>Faça login para participar da discussão</p>
+                  <div class="wiki-login-prompt__actions">
+                    <a routerLink="/login" class="btn-primary">Entrar</a>
+                    <a routerLink="/register" class="btn-ghost">Criar conta</a>
+                  </div>
+                </div>
+              }
+            </div>
+          </section>
+        }
+
+      </main>
+    </div>
+  </div>
+</div>
+}
+
+@if (!loading() && !artist()) {
+  <div class="wiki-notfound container">
+    <h2>Artista não encontrado</h2>
+    <p>Esta página ainda não existe no arquivo.</p>
+    <div style="display:flex;gap:12px;margin-top:24px">
+      <a routerLink="/" class="btn-ghost">← Voltar</a>
+      <a routerLink="/create" class="btn-primary">Criar esta página</a>
+    </div>
+  </div>
+}

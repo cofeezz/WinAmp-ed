@@ -1,0 +1,51 @@
+// ============================================
+// UNDERGROUND WIKI — Design Tokens
+// Y2K × Frutiger Aero × Web 2.0 Archive
+// ============================================
+
+// --- Palette ---
+$black:       #0A0A0A;
+$dark:        #161616;
+$dark-2:      #1E1E1E;
+$dark-3:      #242424;
+$blue:        #3B82F6;
+$cyan:        #22D3EE;
+$aqua:        #34D399;
+$white-ice:   #F5F7FA;
+$white-dim:   #A0AEC0;
+$purple:      #8B5CF6;
+$pink:        #EC4899;
+
+// --- Gradients ---
+$grad-hero:     linear-gradient(135deg, #0A0A0A 0%, #0d1a2e 50%, #0A0A0A 100%);
+$grad-blue:     linear-gradient(135deg, #3B82F6, #22D3EE);
+$grad-aqua:     linear-gradient(135deg, #22D3EE, #34D399);
+$grad-chrome:   linear-gradient(180deg, #e8f4ff 0%, #b8d4f0 30%, #7ab0e8 60%, #4a8fd8 100%);
+$grad-card:     linear-gradient(145deg, rgba(59,130,246,0.08), rgba(34,211,238,0.04));
+
+// --- Glass ---
+$glass-bg:      rgba(255,255,255,0.04);
+$glass-border:  rgba(255,255,255,0.08);
+$glass-hover:   rgba(255,255,255,0.07);
+
+// --- Typography ---
+$font-display:  'Orbitron', sans-serif;
+$font-body:     'Space Grotesk', sans-serif;
+$font-mono:     'Space Mono', monospace;
+
+// --- Glow ---
+$glow-blue:   0 0 20px rgba(59,130,246,0.4);
+$glow-cyan:   0 0 20px rgba(34,211,238,0.4);
+$glow-aqua:   0 0 20px rgba(52,211,153,0.3);
+$glow-sm:     0 0 8px rgba(59,130,246,0.3);
+
+// --- Spacing ---
+$nav-height:  64px;
+$radius-sm:   8px;
+$radius-md:   12px;
+$radius-lg:   20px;
+$radius-xl:   28px;
+
+// --- Transitions ---
+$transition:  all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+$transition-slow: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);

@@ -1,0 +1,96 @@
+@if (loading()) {
+  <div class="profile-loading container">
+    <div class="skeleton" style="height:160px;width:160px;border-radius:20px;margin-bottom:24px"></div>
+    <div class="skeleton" style="height:24px;width:200px;margin-bottom:12px"></div>
+    <div class="skeleton" style="height:16px;width:300px"></div>
+  </div>
+}
+
+@if (notFound()) {
+  <div class="profile-notfound container">
+    <h2>Usuário não encontrado</h2>
+    <p>Este perfil não existe no arquivo.</p>
+    <a routerLink="/" class="btn-primary">← Voltar ao início</a>
+  </div>
+}
+
+@if (!loading() && profile(); as p) {
+  <div class="profile-page">
+    <div class="profile-hero">
+      <div class="profile-hero__bg"></div>
+      <div class="container profile-hero__content">
+        <div class="profile-avatar">
+          @if (p.avatarUrl) {
+            <img [src]="p.avatarUrl" [alt]="p.username" />
+          } @else {
+            <span>{{ p.username.charAt(0).toUpperCase() }}</span>
+          }
+        </div>
+
+        <div class="profile-info">
+          <h1 class="profile-username">{{ p.username }}</h1>
+          <p class="profile-joined">
+            no arquivo desde {{ p.createdAt | date:'MMMM yyyy' }}
+          </p>
+          @if (p.bio) {
+            <p class="profile-bio">{{ p.bio }}</p>
+          }
+
+          @if (isOwnProfile) {
+            <a routerLink="/profile/me/edit" class="btn-cyber">✏️ Editar perfil</a>
+          }
+        </div>
+
+        <div class="profile-stat">
+          <span class="profile-stat__value">{{ p._count.articles }}</span>
+          <span class="profile-stat__label">páginas criadas</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="container profile-body">
+
+      <!-- Favorite artists -->
+      @if (p.favoriteArtists && p.favoriteArtists.length > 0) {
+        <section class="profile-section">
+          <h2 class="profile-section__title">
+            <span>♥</span> Artistas favoritos
+          </h2>
+          <div class="profile-tags">
+            @for (artist of p.favoriteArtists; track artist) {
+              <span class="tag">{{ artist }}</span>
+            }
+          </div>
+        </section>
+      }
+
+      <!-- Created pages -->
+      <section class="profile-section">
+        <h2 class="profile-section__title">
+          <span>📝</span> Páginas criadas
+        </h2>
+
+        @if (p.articles.length === 0) {
+          <div class="wiki-empty glass-card">
+            <p>{{ p.username }} ainda não criou nenhuma página.</p>
+            @if (isOwnProfile) {
+              <a routerLink="/create" class="btn-cyber">Criar primeira página ›</a>
+            }
+          </div>
+        } @else {
+          <div class="profile-articles">
+            @for (article of p.articles; track article.id) {
+              <a class="profile-article-card glass-card" [routerLink]="['/artist', article.artist.slug]">
+                <div class="profile-article-card__main">
+                  <h3>{{ article.title }}</h3>
+                  <p>sobre <span class="gradient-text">{{ article.artist.name }}</span></p>
+                </div>
+                <span class="profile-article-card__date">{{ article.createdAt | date:'dd/MM/yyyy' }}</span>
+              </a>
+            }
+          </div>
+        }
+      </section>
+    </div>
+  </div>
+}

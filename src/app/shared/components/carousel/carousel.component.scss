@@ -1,0 +1,170 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+// ============================================
+// THE SIGNATURE: Diagonal rolling carousel
+// Cards on tilted tracks, like a digital VHS
+// ============================================
+
+@keyframes scroll-forward {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@keyframes scroll-backward {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
+}
+
+.carousel-stage {
+  position: relative;
+  width: 100%;
+  height: 520px;
+  overflow: hidden;
+  // The key: rotate the whole stage diagonally
+  transform: rotate(-6deg) scaleX(1.15);
+  transform-origin: center center;
+  margin: -40px 0;
+}
+
+.carousel-row {
+  position: absolute;
+  width: 100%;
+  overflow: hidden;
+
+  &.row-1 { top: 20px; }
+  &.row-2 { top: 190px; }
+  &.row-3 { top: 355px; }
+}
+
+.carousel-track {
+  display: flex;
+  gap: 16px;
+  width: max-content;
+  will-change: transform;
+
+  &.track-forward {
+    animation: scroll-forward 28s linear infinite;
+  }
+
+  &.track-backward {
+    animation: scroll-backward 22s linear infinite;
+  }
+
+  &.track-forward-slow {
+    animation: scroll-forward 38s linear infinite;
+  }
+
+  // Pause on hover for accessibility
+  &:hover {
+    animation-play-state: paused;
+  }
+}
+
+.carousel-item {
+  position: relative;
+  width: 160px;
+  height: 150px;
+  border-radius: $radius-md;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: block;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid $glass-border;
+  transition: all 0.2s ease;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  &__fallback {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, $dark-2, rgba($blue,0.15));
+    font-family: $font-display;
+    font-size: 2.5rem;
+    font-weight: 900;
+    @include gradient-text($grad-blue);
+    opacity: 0.6;
+  }
+
+  &__label {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 28px 10px 10px;
+    background: linear-gradient(to top, rgba($black,0.9), transparent);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &__name {
+    font-family: $font-display;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: $white-ice;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__genre {
+    font-size: 0.6rem;
+    color: $cyan;
+    font-family: $font-mono;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &:hover {
+    border-color: rgba($cyan, 0.5);
+    box-shadow: 0 0 16px rgba($cyan, 0.2);
+    z-index: 5;
+
+    img { transform: scale(1.05); }
+  }
+
+  &--sm {
+    width: 130px;
+    height: 120px;
+  }
+}
+
+// Fade masks on the diagonal edges
+.carousel-mask-left,
+.carousel-mask-right {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 180px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.carousel-mask-left {
+  left: 0;
+  background: linear-gradient(to right, $black 20%, transparent);
+}
+
+.carousel-mask-right {
+  right: 0;
+  background: linear-gradient(to left, $black 20%, transparent);
+}
+
+// Respect reduced motion preference
+@media (prefers-reduced-motion: reduce) {
+  .carousel-track {
+    animation: none !important;
+  }
+}

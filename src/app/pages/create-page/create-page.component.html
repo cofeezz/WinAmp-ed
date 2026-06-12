@@ -1,0 +1,177 @@
+<div class="create-page">
+  <div class="create-page__bg">
+    <div class="create-page__bg-glow"></div>
+  </div>
+
+  <div class="container">
+    <div class="create-header">
+      <a routerLink="/" class="create-back">← Voltar</a>
+      <div class="create-header__text">
+        <h1 class="create-title">
+          Faça os outros conhecerem<br />
+          <em>o que você escuta</em>
+        </h1>
+        <p class="create-subtitle">Crie uma página wiki para um artista underground</p>
+      </div>
+
+      <!-- Progress -->
+      <div class="create-steps">
+        <div class="create-step" [class.active]="step()===1" [class.done]="step()>1">
+          <span class="create-step__num">01</span>
+          <span>Artista</span>
+        </div>
+        <div class="create-step__line"></div>
+        <div class="create-step" [class.active]="step()===2">
+          <span class="create-step__num">02</span>
+          <span>Conteúdo</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUCCESS -->
+    @if (success()) {
+      <div class="create-success glass-card">
+        <div class="create-success__icon">✓</div>
+        <h2>Página publicada!</h2>
+        <p>Redirecionando para a página do artista...</p>
+      </div>
+    }
+
+    <!-- STEP 1: ARTIST -->
+    @if (!success() && step() === 1) {
+      <div class="create-body glass-card">
+        <h2 class="create-section-title">Qual artista você quer documentar?</h2>
+
+        <!-- Search existing -->
+        <div class="artist-search">
+          <p class="artist-search__label">Buscar artista já cadastrado:</p>
+          <div class="artist-search__list">
+            @for (artist of artists(); track artist.id) {
+              <button
+                class="artist-chip"
+                [class.selected]="selectedArtist()?.id === artist.id"
+                (click)="selectArtist(artist)"
+              >
+                @if (artist.imageUrl) {
+                  <img [src]="artist.imageUrl" [alt]="artist.name" />
+                } @else {
+                  <span class="artist-chip__letter">{{ artist.name.charAt(0) }}</span>
+                }
+                <span>{{ artist.name }}</span>
+              </button>
+            }
+          </div>
+        </div>
+
+        <div class="create-divider">
+          <span>ou</span>
+        </div>
+
+        <!-- New artist toggle -->
+        <button class="btn-cyber create-new-toggle" (click)="toggleNewArtist()">
+          {{ isNewArtist() ? '— Cancelar novo artista' : '+ Cadastrar novo artista' }}
+        </button>
+
+        @if (isNewArtist()) {
+          <form [formGroup]="artistForm" class="new-artist-form">
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Nome artístico *</label>
+                <input type="text" formControlName="newArtistName" placeholder="Ex: The Microphones" />
+              </div>
+              <div class="form-group">
+                <label>Gênero(s)</label>
+                <input type="text" formControlName="newArtistGenre" placeholder="Ex: Lo-fi / Folk" />
+              </div>
+              <div class="form-group">
+                <label>Origem</label>
+                <input type="text" formControlName="newArtistOrigin" placeholder="Ex: Olympia, WA" />
+              </div>
+              <div class="form-group">
+                <label>URL da Imagem</label>
+                <input type="url" formControlName="newArtistImage" placeholder="https://..." />
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Biografia breve</label>
+              <textarea formControlName="newArtistBio" placeholder="Quem é este artista?"></textarea>
+            </div>
+          </form>
+        }
+
+        @if (error()) {
+          <p class="error-msg">⚠ {{ error() }}</p>
+        }
+
+        <div class="create-actions">
+          <button class="btn-primary" (click)="goToContent()" [disabled]="loading()">
+            @if (loading()) { Criando artista... } @else { Próximo: Conteúdo → }
+          </button>
+        </div>
+      </div>
+    }
+
+    <!-- STEP 2: CONTENT -->
+    @if (!success() && step() === 2) {
+      <div class="create-body">
+        @if (selectedArtist(); as a) {
+          <div class="create-artist-badge glass-card">
+            @if (a.imageUrl) {
+              <img [src]="a.imageUrl" [alt]="a.name" />
+            }
+            <div>
+              <p class="create-artist-badge__label">Criando página para</p>
+              <h3 class="create-artist-badge__name">{{ a.name }}</h3>
+              @if (a.genre) { <span class="tag">{{ a.genre }}</span> }
+            </div>
+            <button class="btn-ghost" (click)="step.set(1)" style="margin-left:auto">Trocar</button>
+          </div>
+        }
+
+        <div class="glass-card create-editor">
+          <form [formGroup]="contentForm">
+            <div class="form-group">
+              <label>Título do artigo / tópico *</label>
+              <input type="text" formControlName="title" placeholder="Ex: História e discografia completa" />
+            </div>
+
+            <div class="form-group">
+              <label>Conteúdo *</label>
+              <textarea
+                formControlName="content"
+                rows="14"
+                placeholder="Escreva sobre o artista... Biografia, discografia, curiosidades, influências, legado..."
+              ></textarea>
+            </div>
+
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Tags / gêneros (separados por vírgula)</label>
+                <input type="text" formControlName="tags" placeholder="lo-fi, experimental, indie" />
+              </div>
+              <div class="form-group">
+                <label>Links externos (um por linha)</label>
+                <textarea formControlName="externalLinks" rows="3" placeholder="https://spotify.com/artist/..."></textarea>
+              </div>
+              <div class="form-group">
+                <label>URLs de vídeo (YouTube, um por linha)</label>
+                <textarea formControlName="videoUrls" rows="3" placeholder="https://youtube.com/watch?v=..."></textarea>
+              </div>
+            </div>
+          </form>
+
+          @if (error()) {
+            <p class="error-msg">⚠ {{ error() }}</p>
+          }
+
+          <div class="create-actions">
+            <button class="btn-ghost" (click)="step.set(1)">← Voltar</button>
+            <button class="btn-primary" (click)="submit()" [disabled]="loading() || contentForm.invalid">
+              @if (loading()) { Publicando... } @else { 🌐 Publicar página }
+            </button>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,116 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+.artist-card {
+  position: relative;
+  display: block;
+  width: 180px;
+  height: 240px;
+  border-radius: $radius-md;
+  overflow: hidden;
+  text-decoration: none;
+  cursor: pointer;
+  flex-shrink: 0;
+  @include glow-border($blue);
+  background: $dark-2;
+  transition: $transition-slow;
+
+  &:hover {
+    transform: scale(1.04) rotate(0deg) !important;
+    z-index: 10;
+
+    .artist-card__glow {
+      opacity: 1;
+    }
+
+    .artist-card__overlay {
+      background: linear-gradient(to top, rgba($black,0.9) 30%, transparent);
+    }
+
+    .artist-card__name {
+      @include gradient-text($grad-blue);
+    }
+  }
+
+  &__image {
+    position: absolute;
+    inset: 0;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: $transition-slow;
+    }
+  }
+
+  &__placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, $dark-2, $dark-3);
+
+    span {
+      font-family: $font-display;
+      font-size: 4rem;
+      font-weight: 900;
+      @include gradient-text($grad-blue);
+      opacity: 0.4;
+    }
+  }
+
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba($black,0.85) 40%, transparent);
+    transition: $transition;
+  }
+
+  &__info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 16px 14px 14px;
+    z-index: 2;
+  }
+
+  &__name {
+    font-family: $font-display;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: $white-ice;
+    letter-spacing: 0.03em;
+    line-height: 1.3;
+    margin-bottom: 4px;
+    transition: $transition;
+  }
+
+  &__genre {
+    font-size: 0.7rem;
+    color: $cyan;
+    font-family: $font-mono;
+    letter-spacing: 0.05em;
+    opacity: 0.85;
+  }
+
+  &__origin {
+    font-size: 0.65rem;
+    color: $white-dim;
+    margin-top: 2px;
+    opacity: 0.7;
+  }
+
+  &__glow {
+    position: absolute;
+    inset: -2px;
+    border-radius: $radius-md;
+    background: $grad-blue;
+    opacity: 0;
+    transition: $transition;
+    z-index: -1;
+    filter: blur(8px);
+  }
+}

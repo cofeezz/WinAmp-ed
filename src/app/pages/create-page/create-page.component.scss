@@ -1,0 +1,281 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.create-page {
+  min-height: 100vh;
+  padding: 60px 0 80px;
+  position: relative;
+
+  &__bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+
+    &-glow {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 400px;
+      background: radial-gradient(ellipse, rgba($blue,0.08) 0%, transparent 70%);
+      filter: blur(40px);
+    }
+  }
+}
+
+.create-header {
+  position: relative;
+  z-index: 2;
+  margin-bottom: 40px;
+}
+
+.create-back {
+  font-size: 0.85rem;
+  color: $white-dim;
+  margin-bottom: 24px;
+  display: inline-block;
+  &:hover { color: $cyan; }
+}
+
+.create-title {
+  font-family: $font-display;
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-weight: 900;
+  color: $white-ice;
+  margin-bottom: 8px;
+
+  em {
+    font-style: normal;
+    @include gradient-text($grad-blue);
+  }
+}
+
+.create-subtitle {
+  color: $white-dim;
+  font-size: 0.95rem;
+  margin-bottom: 32px;
+}
+
+.create-steps {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.create-step {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  opacity: 0.4;
+  transition: $transition;
+  font-size: 0.85rem;
+  color: $white-dim;
+
+  &.active { opacity: 1; color: $cyan; }
+  &.done   { opacity: 0.7; color: $aqua; }
+
+  &__num {
+    font-family: $font-mono;
+    font-size: 0.7rem;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid currentColor;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__line {
+    flex: 1;
+    height: 1px;
+    background: $glass-border;
+    max-width: 60px;
+  }
+}
+
+.create-body {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.create-section-title {
+  font-family: $font-display;
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  color: $white-dim;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.artist-search {
+  &__label {
+    font-size: 0.85rem;
+    color: $white-dim;
+    margin-bottom: 16px;
+  }
+
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    max-height: 220px;
+    overflow-y: auto;
+    padding-right: 4px;
+  }
+}
+
+.artist-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px 8px 8px;
+  border-radius: 100px;
+  background: $glass-bg;
+  border: 1px solid $glass-border;
+  color: $white-dim;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: $transition;
+  font-family: $font-body;
+
+  img {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  &__letter {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba($blue,0.3), rgba($cyan,0.2));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: $font-display;
+    font-size: 0.75rem;
+    color: $cyan;
+  }
+
+  &:hover {
+    border-color: rgba($blue, 0.4);
+    color: $white-ice;
+  }
+
+  &.selected {
+    border-color: $cyan;
+    background: rgba($cyan, 0.1);
+    color: $cyan;
+  }
+}
+
+.create-divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: $white-dim;
+  font-size: 0.8rem;
+
+  &::before, &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: $glass-border;
+  }
+}
+
+.create-new-toggle {
+  align-self: flex-start;
+}
+
+.new-artist-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+  @include glass();
+  border-radius: $radius-md;
+  margin-top: 4px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.create-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.create-artist-badge {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  img {
+    width: 56px;
+    height: 56px;
+    border-radius: $radius-sm;
+    object-fit: cover;
+  }
+
+  &__label {
+    font-size: 0.75rem;
+    color: $white-dim;
+    font-family: $font-mono;
+    margin-bottom: 4px;
+  }
+
+  &__name {
+    font-family: $font-display;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: $white-ice;
+    margin-bottom: 6px;
+  }
+}
+
+.create-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.create-success {
+  text-align: center;
+  padding: 60px;
+
+  &__icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: $grad-aqua;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    margin: 0 auto 24px;
+    color: $black;
+    font-weight: 700;
+  }
+
+  h2 {
+    font-family: $font-display;
+    font-size: 1.5rem;
+    color: $white-ice;
+    margin-bottom: 8px;
+  }
+
+  p { color: $white-dim; }
+}

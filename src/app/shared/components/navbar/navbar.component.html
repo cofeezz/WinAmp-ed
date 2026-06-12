@@ -1,0 +1,54 @@
+<nav class="navbar">
+  <div class="navbar__inner">
+    <!-- Logo -->
+    <a class="navbar__logo" routerLink="/">
+      <span class="navbar__logo-icon">◈</span>
+      <span class="navbar__logo-text">underground<em>wiki</em></span>
+    </a>
+
+    <!-- Nav Links -->
+    <div class="navbar__links" [class.open]="menuOpen">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Início</a>
+      <a routerLink="/explore">Explorar</a>
+      @if (isLoggedIn()) {
+        <a routerLink="/create" class="btn-nav-cta">+ Nova Página</a>
+      }
+    </div>
+
+    <!-- User area -->
+    <div class="navbar__user">
+      @if (isLoggedIn()) {
+        <div class="navbar__avatar-wrap">
+          <button class="navbar__avatar" (click)="toggleMenu()">
+            {{ user()?.username?.charAt(0)?.toUpperCase() }}
+          </button>
+          @if (menuOpen) {
+            <div class="navbar__dropdown">
+              <a [routerLink]="['/profile', user()?.username]" (click)="menuOpen=false">
+                <span>👤</span> Meu Perfil
+              </a>
+              <a routerLink="/profile/me/edit" (click)="menuOpen=false">
+                <span>✏️</span> Editar Perfil
+              </a>
+              <a routerLink="/create" (click)="menuOpen=false">
+                <span>📝</span> Nova Página
+              </a>
+              <div class="navbar__dropdown-divider"></div>
+              <button (click)="logout()">
+                <span>🚪</span> Sair
+              </button>
+            </div>
+          }
+        </div>
+      } @else {
+        <a routerLink="/login" class="btn-ghost btn-sm">Entrar</a>
+        <a routerLink="/register" class="btn-primary btn-sm">Cadastrar</a>
+      }
+    </div>
+
+    <!-- Mobile hamburger -->
+    <button class="navbar__hamburger" (click)="toggleMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>

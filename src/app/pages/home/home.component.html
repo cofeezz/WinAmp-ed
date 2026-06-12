@@ -1,0 +1,108 @@
+<!-- HERO -->
+<section class="hero">
+  <div class="hero__bg-grid"></div>
+  <div class="hero__content">
+    <div class="hero__eyebrow">
+      <span class="hero__dot"></span>
+      arquivo digital aberto · atualizado em tempo real
+    </div>
+    <h1 class="hero__title">
+      A Wikipedia da<br />
+      <em class="hero__title-accent">Música Underground</em>
+    </h1>
+    <p class="hero__subtitle">
+      Descubra, documente e compartilhe artistas independentes,<br class="desktop-only" />
+      obscuros e alternativos de qualquer gênero ou era.
+    </p>
+
+    <!-- Search Bar -->
+    <div class="hero__search">
+      <app-search-bar />
+    </div>
+
+    <div class="hero__actions">
+      <a routerLink="/create" class="btn-primary hero__cta">
+        Faça os outros conhecerem o que você escuta
+      </a>
+      <a routerLink="/explore" class="btn-ghost">
+        Explorar arquivo ›
+      </a>
+    </div>
+
+    <!-- Stats bar -->
+    <div class="hero__stats">
+      <div class="hero__stat">
+        <span class="hero__stat-value">+2.4k</span>
+        <span class="hero__stat-label">artistas arquivados</span>
+      </div>
+      <div class="hero__stat-divider"></div>
+      <div class="hero__stat">
+        <span class="hero__stat-value">+8.1k</span>
+        <span class="hero__stat-label">páginas criadas</span>
+      </div>
+      <div class="hero__stat-divider"></div>
+      <div class="hero__stat">
+        <span class="hero__stat-value">47</span>
+        <span class="hero__stat-label">gêneros catalogados</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CAROUSEL SECTION -->
+<section class="carousel-section">
+  <div class="carousel-section__header container">
+    <div class="section-label">
+      <span class="section-label__dot"></span>
+      Em destaque este mês
+    </div>
+    <h2 class="section-title">Artistas em Alta</h2>
+    <p class="section-desc">Os mais descobertos pela comunidade nas últimas semanas</p>
+  </div>
+
+  @if (loading()) {
+    <div class="carousel-loading">
+      <div class="skeleton" style="width:100%;height:460px;border-radius:0"></div>
+    </div>
+  } @else if (artists().length > 0) {
+    <div class="carousel-wrap">
+      <app-carousel [artists]="artists()" />
+    </div>
+  }
+</section>
+
+<!-- RECENT ARTISTS GRID -->
+<section class="recent-section container">
+  <div class="section-header">
+    <div>
+      <div class="section-label">
+        <span class="section-label__dot green"></span>
+        Recém adicionados
+      </div>
+      <h2 class="section-title">Novos no Arquivo</h2>
+    </div>
+    <a routerLink="/explore" class="btn-cyber">Ver todos</a>
+  </div>
+
+  <div class="artist-grid">
+    @for (artist of recentArtists(); track artist.id) {
+      <app-artist-card [artist]="artist" />
+    }
+    @if (loading()) {
+      @for (i of [1,2,3,4,5,6,7,8]; track i) {
+        <div class="skeleton" style="width:180px;height:240px;border-radius:12px"></div>
+      }
+    }
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<section class="cta-banner container">
+  <div class="cta-banner__inner">
+    <div class="cta-banner__text">
+      <h2>Seu artista favorito não está aqui?</h2>
+      <p>Crie uma página wiki e deixe-o ser descoberto pelo mundo.</p>
+    </div>
+    <a routerLink="/create" class="btn-primary">Criar página agora</a>
+  </div>
+</section>
